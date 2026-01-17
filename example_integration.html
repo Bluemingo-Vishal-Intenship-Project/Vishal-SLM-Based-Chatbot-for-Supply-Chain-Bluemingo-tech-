@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example: Chatbot Integration</title>
+    
+    <!-- Include Chatbot CSS -->
+    <link rel="stylesheet" href="http://localhost:5000/static/chatbot.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .feature-list li:before {
+            content: "✅ ";
+            margin-right: 10px;
+        }
+        
+        .api-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .status-online {
+            background: #10b981;
+            color: white;
+        }
+        
+        .status-offline {
+            background: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            Logistics Chatbot Integration Example
+            <span class="api-status status-offline" id="api-status">Checking...</span>
+        </h1>
+        <p class="subtitle">This page demonstrates how to integrate the chatbot into any website</p>
+        
+        <div class="info-box">
+            <h3>📋 Integration Steps:</h3>
+            <ol>
+                <li>Include the chatbot CSS file in your <code>&lt;head&gt;</code></li>
+                <li>Include the chatbot JavaScript file before closing <code>&lt;/body&gt;</code></li>
+                <li>Initialize the chatbot with your API URL</li>
+                <li>That's it! The chatbot will appear automatically</li>
+            </ol>
+        </div>
+        
+        <h2>Code Example:</h2>
+        <div class="code-block">
+            <code>
+&lt;!-- In &lt;head&gt; --&gt;<br>
+&lt;link rel="stylesheet" href="http://your-server:5000/static/chatbot.css"&gt;<br><br>
+&lt;!-- Before closing &lt;/body&gt; --&gt;<br>
+&lt;script src="http://your-server:5000/static/chatbot.js"&gt;&lt;/script&gt;<br>
+&lt;script&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;const chatbot = new ChatbotWidget({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apiUrl: 'http://your-server:5000/api'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;});<br>
+&lt;/script&gt;
+            </code>
+        </div>
+        
+        <h2>Features:</h2>
+        <ul class="feature-list">
+            <li>Fully responsive chatbot widget</li>
+            <li>Auto-detects API URL from current page</li>
+            <li>Real-time autocomplete suggestions</li>
+            <li>Context-aware question suggestions</li>
+            <li>File upload and processing</li>
+            <li>Settings management</li>
+            <li>Download answers as files</li>
+            <li>Fullscreen mode</li>
+            <li>Minimized state with custom message</li>
+        </ul>
+        
+        <div class="info-box">
+            <h3>🔧 Configuration:</h3>
+            <p>Update the API URL in the script below to match your server:</p>
+            <div class="code-block">
+                <code>
+const chatbot = new ChatbotWidget({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;apiUrl: 'http://YOUR_SERVER_IP:5000/api'<br>
+});
+                </code>
+            </div>
+        </div>
+        
+        <h2>API Endpoints Available:</h2>
+        <ul class="feature-list">
+            <li><code>GET /api/health</code> - Health check</li>
+            <li><code>GET /api/greet</code> - Get greeting</li>
+            <li><code>POST /api/query</code> - Send query</li>
+            <li><code>POST /api/autocomplete</code> - Get autocomplete</li>
+            <li><code>GET /api/faqs</code> - Get FAQs</li>
+            <li><code>POST /api/upload</code> - Upload file</li>
+            <li><code>POST /api/files/list</code> - List files</li>
+            <li><code>POST /api/settings</code> - Get/Update settings</li>
+        </ul>
+    </div>
+    
+    <!-- Include Chatbot JavaScript -->
+    <script src="http://localhost:5000/static/chatbot.js"></script>
+    
+    <!-- Initialize Chatbot -->
+    <script>
+        // Check API status
+        async function checkApiStatus() {
+            try {
+                const response = await fetch('http://localhost:5000/api/health');
+                if (response.ok) {
+                    document.getElementById('api-status').textContent = 'API Online';
+                    document.getElementById('api-status').className = 'api-status status-online';
+                } else {
+                    throw new Error('API not responding');
+                }
+            } catch (error) {
+                document.getElementById('api-status').textContent = 'API Offline';
+                document.getElementById('api-status').className = 'api-status status-offline';
+            }
+        }
+        
+        // Check status on load
+        checkApiStatus();
+        
+        // Initialize chatbot
+        // Auto-detects API URL from current page, or use explicit URL:
+        const chatbot = new ChatbotWidget({
+            apiUrl: 'http://localhost:5000/api'  // Change this to your server IP
+        });
+        
+        console.log('✅ Chatbot initialized!');
+        console.log('📡 API URL:', chatbot.apiUrl);
+    </script>
+</body>
+</html>
+
+
+
+

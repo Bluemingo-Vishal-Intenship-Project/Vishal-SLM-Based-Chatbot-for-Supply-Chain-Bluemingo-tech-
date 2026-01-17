@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Local Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-info h1 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .test-steps {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .test-steps ol {
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+        .test-steps li {
+            margin: 8px 0;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-info">
+        <h1>🧪 Chatbot Local Test Page</h1>
+        <p>This page is for testing the chatbot locally. The chatbot should appear in the bottom-right corner.</p>
+        
+        <div class="test-steps">
+            <h3>Testing Steps:</h3>
+            <ol>
+                <li>Check if chatbot appears in bottom-right corner</li>
+                <li>Click the ⚙️ Settings button - modal should open</li>
+                <li>Test the Files tab - set folder path, upload files, select and process</li>
+                <li>Test the Download tab - set download path</li>
+                <li>Test the FAQs tab - should show all FAQs</li>
+                <li>Type a question and test auto-complete</li>
+                <li>Press Tab to autocomplete</li>
+                <li>Send a message and check response</li>
+            </ol>
+        </div>
+        
+        <div id="test-status">
+            <div class="status success">✅ Page loaded successfully</div>
+            <div id="chatbot-status" class="status">⏳ Waiting for chatbot to initialize...</div>
+        </div>
+    </div>
+    
+    <!-- Load chatbot CSS -->
+    <link rel="stylesheet" href="static/chatbot.css">
+    
+    <!-- Load chatbot JavaScript -->
+    <script src="static/chatbot.js"></script>
+    
+    <!-- Initialize chatbot -->
+    <script>
+        console.log('Initializing chatbot...');
+        
+        // Check if ChatbotWidget is available
+        if (typeof ChatbotWidget !== 'undefined') {
+            console.log('ChatbotWidget found, creating instance...');
+            window.chatbot = new ChatbotWidget({
+                apiUrl: 'http://localhost:5000/api'
+            });
+            
+            // Update status
+            setTimeout(() => {
+                const statusDiv = document.getElementById('chatbot-status');
+                if (window.chatbot && window.chatbot.container) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Chatbot initialized successfully!';
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ Chatbot failed to initialize';
+                }
+            }, 1000);
+        } else {
+            console.error('ChatbotWidget not found!');
+            document.getElementById('chatbot-status').className = 'status error';
+            document.getElementById('chatbot-status').textContent = '❌ ChatbotWidget class not found. Check console for errors.';
+        }
+        
+        // Test settings button after a delay
+        setTimeout(() => {
+            const settingsBtn = document.getElementById('chatbot-settings-btn');
+            if (settingsBtn) {
+                console.log('Settings button found:', settingsBtn);
+                // Test click programmatically
+                settingsBtn.addEventListener('click', () => {
+                    console.log('Settings button clicked via event listener');
+                });
+            } else {
+                console.error('Settings button not found!');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Chatbot Test</title>
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background: #d1fae5; color: #065f46; }
+        .error { background: #fee2e2; color: #991b1b; }
+        .info { background: #dbeafe; color: #1e40af; }
+    </style>
+</head>
+<body>
+    <h1>Simple Chatbot Test</h1>
+    <div id="status" class="status info">Loading...</div>
+    
+    <h2>Test Steps:</h2>
+    <ol>
+        <li>Check if chatbot appears (bottom-right)</li>
+        <li>Type "what is" - should show autocomplete</li>
+        <li>Press Tab - should autocomplete</li>
+        <li>Type a question and press Enter - should send</li>
+        <li>Click 📥 Download on response</li>
+        <li>Click ⚙️ Settings - should open modal</li>
+    </ol>
+    
+    <!-- Debug -->
+    <script src="static/chatbot-debug.js"></script>
+    
+    <!-- Chatbot -->
+    <link rel="stylesheet" href="static/chatbot.css">
+    <script src="static/chatbot.js"></script>
+    <script>
+        console.log('Page loaded, initializing...');
+        
+        // Wait for DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM ready');
+            
+            if (typeof ChatbotWidget === 'undefined') {
+                document.getElementById('status').className = 'status error';
+                document.getElementById('status').textContent = 'ERROR: ChatbotWidget not found! Check console.';
+                return;
+            }
+            
+            try {
+                window.chatbot = new ChatbotWidget({
+                    apiUrl: 'http://localhost:5000/api'
+                });
+                
+                setTimeout(() => {
+                    const status = document.getElementById('status');
+                    if (window.chatbot && window.chatbot.container) {
+                        status.className = 'status success';
+                        status.textContent = '✅ Chatbot loaded successfully! Check bottom-right corner.';
+                    } else {
+                        status.className = 'status error';
+                        status.textContent = '❌ Chatbot failed to initialize. Check console.';
+                    }
+                }, 1000);
+            } catch (error) {
+                document.getElementById('status').className = 'status error';
+                document.getElementById('status').textContent = 'ERROR: ' + error.message;
+                console.error('Initialization error:', error);
+            }
+        });
+        
+        // Test functions
+        window.testSend = function() {
+            if (window.chatbot) {
+                const input = document.getElementById('chatbot-input');
+                if (input) {
+                    input.value = 'What are the column names?';
+                    window.chatbot.sendMessage();
+                }
+            }
+        };
+        
+        window.testAutocomplete = function() {
+            if (window.chatbot) {
+                const input = document.getElementById('chatbot-input');
+                if (input) {
+                    input.value = 'what is';
+                    input.focus();
+                    window.chatbot.handleAutocomplete('what is');
+                }
+            }
+        };
+    </script>
+    
+    <p>
+        <button onclick="testSend()">Test Send Message</button>
+        <button onclick="testAutocomplete()">Test Autocomplete</button>
+    </p>
+</body>
+</html>
+
+
+
+
+
+
+
