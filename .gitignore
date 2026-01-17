@@ -47,11 +47,7 @@ uploads/
 # Documentation (keep only essential)
 *.md
 !README.md
-!INTEGRATION_GUIDE.md
 !QUICK_INTEGRATION.md
-!GITHUB_PREPARATION.md
-!GITHUB_UPLOAD_INSTRUCTIONS.md
-!GITHUB_READY_SUMMARY.md
 
 # IDE
 .vscode/
